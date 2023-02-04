@@ -1,0 +1,95 @@
+name: Label PR
+
+on:
+  pull_request:
+    types: [assigned, opened, edited, synchronize, reopened]
+
+jobs:
+  validate-branch-name:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate branch name
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const BRANCH_REGEX = /^main|develop|(ci|chore|docs|feat|fix|perf|refactor|revert|style)\/\d*(?:[-](?![-])\w*)*$/;
+            const ERROR_MSG =
+              'This branch name does not follow our conventions.' +
+              '\n' +
+              'Rename it with "git branch -m <current-name> <new-name>"' +
+              '\n' +
+              'Here are some example branch names that are accepted: "fix/123-description", "feat/123-longer-description", "chore/123", "main", "develop".';
+
+            const isValidBranchName = new RegExp(BRANCH_REGEX).test(process.env.HEAD_REF);
+            if (!isValidBranchName) {
+              console.error(ERROR_MSG);
+              process.exit(1);
+            }
+
+  label-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Label PR
+        env:
+          HEAD_REF: ${{ github.event.pull_request.head.ref }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            if (process.env.HEAD_REF === 'main' || process.env.HEAD_REF === 'develop') {
+              // no need to copy any labels
+              process.exit(0);
+            }
+
+            function getIssueFromBranchName(branchName) {
+              if (branchName.split('/').length > 1) {
+                return branchName.split('/')[1].split('-')[0];
+              }
+              return branchName.split('-')[0];
+            }
+
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const issueNumber = getIssueFromBranchName(process.env.HEAD_REF);
+
+            const issue = await github.request(
+              `GET /repos/${owner}/${repo}/issues/${issueNumber}`,
+              { owner, repo, issue_number: issueNumber },
+            );
+
+            const issueLabels = issue.data.labels.map((label) => label.name);
+
+            const prNumber = context.payload.number;
+
+            const pr = await github.request(`GET /repos/${owner}/${repo}/issues/${prNumber}`, {
+              owner,
+              repo,
+              issue_number: issueNumber,
+            });
+
+            const startingPRLabels = pr.data.labels.map((label) => label.name);
+
+            const dedupedFinalPRLabels = [
+              ...new Set([...startingPRLabels, ...issueLabels]),
+            ];
+
+            function sortedArrayEqual(array1, array2) {
+              const lengthsAreEqual = array1.length === array2.length;
+              const everyElementMatchesByIndex = array1.every((value, index) => value === array2[index]);
+
+              return lengthsAreEqual && everyElementMatchesByIndex;
+            }
+
+            const hasIssueAdditionalLabels = !sortedArrayEqual(startingPRLabels, dedupedFinalPRLabels)
+            if (hasIssueAdditionalLabels) {
+              await github.request(`PATCH /repos/${owner}/${repo}/issues/${prNumber}`, {
+                owner,
+                repo,
+                issue_number: prNumber,
+                labels: dedupedFinalPRLabels,
+              });
+            }
