@@ -89,6 +89,9 @@ const state = {
   history: {
     mostRecentOverviewPage: '/',
   },
+  confirmTransaction: {
+    txData: {},
+  },
 };
 
 jest.mock('../../store/actions', () => ({
@@ -249,8 +252,12 @@ describe('TokenAllowancePage', () => {
     },
   };
 
+  let store;
+  beforeEach(() => {
+    store = configureMockStore()(state);
+  });
+
   it('should render title "Set a spending cap for your" in token allowance page', () => {
-    const store = configureMockStore()(state);
     const { getByText } = renderWithProvider(
       <TokenAllowance {...props} />,
       store,
@@ -259,7 +266,6 @@ describe('TokenAllowancePage', () => {
   });
 
   it('should render reject button', () => {
-    const store = configureMockStore()(state);
     const { getByTestId } = renderWithProvider(
       <TokenAllowance {...props} />,
       store,
@@ -269,7 +275,6 @@ describe('TokenAllowancePage', () => {
   });
 
   it('should click View details and show function type', () => {
-    const store = configureMockStore()(state);
     const { getByText } = renderWithProvider(
       <TokenAllowance {...props} />,
       store,
@@ -281,7 +286,6 @@ describe('TokenAllowancePage', () => {
   });
 
   it('should click Use default and set input value to default', () => {
-    const store = configureMockStore()(state);
     const { getByText, getByTestId } = renderWithProvider(
       <TokenAllowance {...props} />,
       store,
@@ -295,7 +299,6 @@ describe('TokenAllowancePage', () => {
   });
 
   it('should call back button when button is clicked and return to previous page', () => {
-    const store = configureMockStore()(state);
     const { getByText, getByTestId } = renderWithProvider(
       <TokenAllowance {...props} />,
       store,
@@ -314,7 +317,6 @@ describe('TokenAllowancePage', () => {
   });
 
   it('should click Verify contract details and show popup Contract details', () => {
-    const store = configureMockStore()(state);
     const { getByText } = renderWithProvider(
       <TokenAllowance {...props} />,
       store,
