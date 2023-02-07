@@ -426,7 +426,10 @@ export default class NetworkController extends EventEmitter {
     // infura type-based endpoints
     const isInfura = INFURA_PROVIDER_TYPES.includes(type);
     if (isInfura) {
-      this._configureInfuraProvider(type, this._infuraProjectId);
+      this._configureInfuraProvider({
+        type,
+        infuraProjectId: this._infuraProjectId,
+      });
       // url-based rpc endpoints
     } else if (type === NETWORK_TYPES.RPC) {
       this._configureStandardProvider(rpcUrl, chainId);
@@ -437,11 +440,11 @@ export default class NetworkController extends EventEmitter {
     }
   }
 
-  _configureInfuraProvider(type, projectId) {
-    log.info('NetworkController - configureInfuraProvider', type);
+  _configureInfuraProvider({ type, infuraProjectId }) {
+    log.info('NetworkController - configureInfuraProvider', network);
     const { provider, blockTracker } = createNetworkClient({
       network: type,
-      projectId,
+      infuraProjectId,
       type: 'infura',
     });
     this._setProviderAndBlockTracker({ provider, blockTracker });

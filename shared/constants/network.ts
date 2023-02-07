@@ -165,6 +165,7 @@ export const NETWORK_TYPES = {
   MAINNET: 'mainnet',
   RPC: 'rpc',
   SEPOLIA: 'sepolia',
+  
 } as const;
 
 /**
