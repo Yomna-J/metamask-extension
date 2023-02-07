@@ -17,7 +17,7 @@ import {
   providerFromMiddleware,
   SafeEventEmitterProvider,
 } from 'eth-json-rpc-middleware';
-import type { Block } from 'eth-json-rpc-middleware/dist/types'
+import type { Block } from 'eth-json-rpc-middleware/dist/types';
 import createFilterMiddleware from 'eth-json-rpc-filters';
 import { createInfuraMiddleware } from '@metamask/eth-json-rpc-infura';
 import type { Hex } from '@metamask/utils';
@@ -25,12 +25,12 @@ import createSubscriptionManager from 'eth-json-rpc-filters/subscriptionManager'
 import { PollingBlockTracker } from 'eth-block-tracker';
 import { SECOND } from '../../../../shared/constants/time';
 import { BUILT_IN_NETWORKS } from '../../../../shared/constants/network';
-import type { InfuraJsonRpcSupportedNetwork } from '@metamask/eth-json-rpc-infura/dist/types';
+// import type { InfuraJsonRpcSupportedNetwork } from '@metamask/eth-json-rpc-infura/dist/types';
 
 function createNetworkAndChainIdMiddleware({
   network,
 }: {
-  network: 'mainnet' | 'goerli' | 'sepolia' | 'localhost';
+  network: InfuraSupportedNetwork;
 }) {
   if (!BUILT_IN_NETWORKS[network]) {
     throw new Error(`createInfuraClient - unknown network "${network}"`);
@@ -48,6 +48,10 @@ function createCustomNetworkMiddleware({
   blockTracker,
   chainId,
   rpcApiMiddleware,
+}: {
+  blockTracker: PollingBlockTracker;
+  chainId: string,
+  rpcApiMiddleware: any,
 }) {
   const testMiddlewares = process.env.IN_TEST
     ? [createEstimateGasDelayTestMiddleware()]
@@ -64,18 +68,20 @@ function createCustomNetworkMiddleware({
   ]);
 }
 
-
-
 function createInfuraNetworkMiddleware({
   blockTracker,
   network,
   rpcProvider,
   rpcApiMiddleware,
 }: {
-  blockTracker: PollingBlockTracker,
-  network: InfuraJsonRpcSupportedNetwork,
-  rpcProvider: SafeEventEmitterProvider,
-  rpcApiMiddleware: JsonRpcMiddleware<string[], Block> | JsonRpcMiddleware<unknown, unknown>,
+  blockTracker: PollingBlockTracker;
+  network: 'mainnet' | 'goerli' | 'sepolia' | 'localhost';
+  // network: InfuraJsonRpcSupportedNetwork,
+  rpcProvider: SafeEventEmitterProvider;
+  rpcApiMiddleware: any,
+  // rpcApiMiddleware:
+  //   | JsonRpcMiddleware<string[], Block>
+  //   | JsonRpcMiddleware<unknown, unknown>;
 }) {
   return mergeMiddleware([
     createNetworkAndChainIdMiddleware({ network }),
@@ -99,10 +105,10 @@ type CustomNetworkConfiguration = {
   type: NetworkClientType.CUSTOM;
 };
 
-// type InfuraSupportedNetwork = 'goerli' | 'mainnet' | 'sepolia';
+type InfuraSupportedNetwork = 'goerli' | 'mainnet' | 'sepolia' | 'localhost';
 
 type InfuraNetworkConfiguration = {
-  network: InfuraJsonRpcSupportedNetwork;
+  network: InfuraSupportedNetwork;
   projectId: string;
   type: NetworkClientType.INFURA;
 };
@@ -116,13 +122,11 @@ type InfuraNetworkConfiguration = {
 export function createNetworkClient(
   networkConfig: CustomNetworkConfiguration | InfuraNetworkConfiguration,
 ) {
-
-  
-
-  if(networkConfig.type === NetworkClientType.INFURA){
-
+  if (networkConfig.type === NetworkClientType.INFURA) {
   }
-  const rpcApiMiddleware: JsonRpcMiddleware<unknown, unknown> | JsonRpcMiddleware<string[], Block>  =
+  const rpcApiMiddleware:
+    | JsonRpcMiddleware<unknown, unknown>
+    | JsonRpcMiddleware<string[], Block> =
     networkConfig.type === NetworkClientType.INFURA
       ? createInfuraMiddleware({
           network: networkConfig.network,
@@ -132,16 +136,16 @@ export function createNetworkClient(
         })
       : createFetchMiddleware({ rpcUrl: networkConfig.rpcUrl });
 
-      const rpcProvider = providerFromMiddleware(rpcApiMiddleware);
-  
-      const blockTrackerOpts =
-      process.env.IN_TEST && networkConfig.type === 'custom'
+  const rpcProvider = providerFromMiddleware(rpcApiMiddleware);
+
+  const blockTrackerOpts =
+    process.env.IN_TEST && networkConfig.type === 'custom'
       ? { pollingInterval: SECOND }
       : {};
-      const blockTracker = new PollingBlockTracker({
-        ...blockTrackerOpts,
-        provider: rpcProvider,
-      });
+  const blockTracker = new PollingBlockTracker({
+    ...blockTrackerOpts,
+    provider: rpcProvider,
+  });
 
   const networkMiddleware =
     networkConfig.type === NetworkClientType.INFURA
@@ -157,7 +161,6 @@ export function createNetworkClient(
           rpcApiMiddleware,
         });
 
-    
   const networkProvider = providerFromMiddleware(networkMiddleware);
 
   const filterMiddleware = createFilterMiddleware({
