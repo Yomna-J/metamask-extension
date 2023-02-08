@@ -50,8 +50,8 @@ function createCustomNetworkMiddleware({
   rpcApiMiddleware,
 }: {
   blockTracker: PollingBlockTracker;
-  chainId: string,
-  rpcApiMiddleware: any,
+  chainId: string;
+  rpcApiMiddleware: any;
 }) {
   const testMiddlewares = process.env.IN_TEST
     ? [createEstimateGasDelayTestMiddleware()]
@@ -78,7 +78,7 @@ function createInfuraNetworkMiddleware({
   network: 'mainnet' | 'goerli' | 'sepolia' | 'localhost';
   // network: InfuraJsonRpcSupportedNetwork,
   rpcProvider: SafeEventEmitterProvider;
-  rpcApiMiddleware: any,
+  rpcApiMiddleware: any;
   // rpcApiMiddleware:
   //   | JsonRpcMiddleware<string[], Block>
   //   | JsonRpcMiddleware<unknown, unknown>;
@@ -121,7 +121,7 @@ type InfuraNetworkConfiguration = {
  */
 export function createNetworkClient(
   networkConfig: CustomNetworkConfiguration | InfuraNetworkConfiguration,
-) {
+): { provider: SafeEventEmitterProvider; blockTracker: PollingBlockTracker } {
   const rpcApiMiddleware:
     | JsonRpcMiddleware<unknown, unknown>
     | JsonRpcMiddleware<string[], Block> =

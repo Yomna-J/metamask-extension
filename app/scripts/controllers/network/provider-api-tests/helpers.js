@@ -344,13 +344,9 @@ export async function withNetworkClient(
         });
   process.env.IN_TEST = inTest;
 
-  const { networkMiddleware, blockTracker } = clientUnderTest;
+  const { provider, blockTracker } = clientUnderTest;
 
-  const engine = new JsonRpcEngine();
-  engine.push(networkMiddleware);
-  const provider = providerFromEngine(engine);
   const ethQuery = new EthQuery(provider);
-
   const curriedMakeRpcCall = (request) => makeRpcCall(ethQuery, request);
   const makeRpcCallsInSeries = async (requests) => {
     const responses = [];
