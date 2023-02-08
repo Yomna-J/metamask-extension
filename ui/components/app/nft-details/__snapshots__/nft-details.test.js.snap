@@ -34,7 +34,7 @@ exports[`Collectible Details should match minimal props and state snapshot 1`] =
       class="collectible-details__top-section"
     >
       <div
-        class="box collectible-details__card box--flex-direction-row box--justify-content-center box--background-color-background-default box--rounded-md box--border-style-solid box--border-color-border-muted box--border-width-1 box--display-flex"
+        class="box collectible-details__card box--padding-0 box--flex-direction-row box--justify-content-center box--background-color-background-default box--rounded-md box--border-style-solid box--border-color-border-muted box--border-width-1 box--display-flex"
       >
         <img
           alt="MUNK #1 1"
@@ -47,12 +47,12 @@ exports[`Collectible Details should match minimal props and state snapshot 1`] =
       >
         <div>
           <h4
-            class="box box--margin-top-1 box--margin-bottom-2 box--flex-direction-row typography typography--h4 typography--weight-bold typography--style-normal typography--color-text-default"
+            class="box box--margin-0 box--margin-top-1 box--margin-bottom-2 box--flex-direction-row typography typography--h4 typography--weight-bold typography--style-normal typography--color-text-default"
           >
             MUNK #1
           </h4>
           <h5
-            class="box box--margin-top-1 box--margin-bottom-4 box--flex-direction-row typography typography--h5 typography--weight-normal typography--style-normal typography--color-text-muted typography--overflowwrap-break-word"
+            class="box box--margin-0 box--margin-top-1 box--margin-bottom-4 box--flex-direction-row typography typography--h5 typography--weight-normal typography--style-normal typography--color-text-muted typography--overflowwrap-break-word"
           >
             #
             1
@@ -79,12 +79,12 @@ exports[`Collectible Details should match minimal props and state snapshot 1`] =
         class="box box--display-flex box--flex-direction-row"
       >
         <h6
-          class="box box--margin-top-1 box--margin-right-2 box--margin-bottom-4 box--flex-direction-row typography collectible-details__link-title typography--h6 typography--weight-bold typography--style-normal typography--color-text-default"
+          class="box box--margin-0 box--margin-top-1 box--margin-right-2 box--margin-bottom-4 box--flex-direction-row typography collectible-details__link-title typography--h6 typography--weight-bold typography--style-normal typography--color-text-default"
         >
           Source
         </h6>
         <h6
-          class="box box--margin-top-1 box--margin-bottom-4 box--flex-direction-row typography collectible-details__image-source typography--h6 typography--weight-normal typography--style-normal typography--color-primary-default"
+          class="box box--margin-0 box--margin-top-1 box--margin-bottom-4 box--flex-direction-row typography collectible-details__image-source typography--h6 typography--weight-normal typography--style-normal typography--color-primary-default"
         >
           <a
             href="https://bafybeiclzx7zfjvuiuwobn5ip3ogc236bjqfjzoblumf4pau4ep6dqramu.ipfs.dweb.link"
@@ -100,12 +100,12 @@ exports[`Collectible Details should match minimal props and state snapshot 1`] =
         class="box box--display-flex box--flex-direction-row"
       >
         <h6
-          class="box box--margin-top-1 box--margin-right-2 box--margin-bottom-4 box--flex-direction-row typography collectible-details__link-title typography--h6 typography--weight-bold typography--style-normal typography--color-text-default"
+          class="box box--margin-0 box--margin-top-1 box--margin-right-2 box--margin-bottom-4 box--flex-direction-row typography collectible-details__link-title typography--h6 typography--weight-bold typography--style-normal typography--color-text-default"
         >
           Link
         </h6>
         <h6
-          class="box box--margin-top-1 box--margin-bottom-4 box--flex-direction-row typography collectible-details__image-source typography--h6 typography--weight-normal typography--style-normal typography--color-primary-default"
+          class="box box--margin-0 box--margin-top-1 box--margin-bottom-4 box--flex-direction-row typography collectible-details__image-source typography--h6 typography--weight-normal typography--style-normal typography--color-primary-default"
         >
           <a
             href="https://bafybeiclzx7zfjvuiuwobn5ip3ogc236bjqfjzoblumf4pau4ep6dqramu.ipfs.dweb.link"
@@ -119,7 +119,7 @@ exports[`Collectible Details should match minimal props and state snapshot 1`] =
         class="box box--display-flex box--flex-direction-row"
       >
         <h6
-          class="box box--margin-top-1 box--margin-right-2 box--margin-bottom-4 box--flex-direction-row typography collectible-details__link-title typography--h6 typography--weight-bold typography--style-normal typography--color-text-default"
+          class="box box--margin-0 box--margin-top-1 box--margin-right-2 box--margin-bottom-4 box--flex-direction-row typography collectible-details__link-title typography--h6 typography--weight-bold typography--style-normal typography--color-text-default"
         >
           Contract address
         </h6>
@@ -127,7 +127,7 @@ exports[`Collectible Details should match minimal props and state snapshot 1`] =
           class="box collectible-details__contract-wrapper box--display-flex box--flex-direction-row"
         >
           <h6
-            class="box box--margin-top-1 box--margin-bottom-4 box--flex-direction-row typography typography--h6 typography--weight-normal typography--style-normal typography--color-text-alternative typography--overflowwrap-break-word"
+            class="box box--margin-0 box--margin-top-1 box--margin-bottom-4 box--flex-direction-row typography typography--h6 typography--weight-normal typography--style-normal typography--color-text-alternative typography--overflowwrap-break-word"
           >
             0xDc7...6414
           </h6>
