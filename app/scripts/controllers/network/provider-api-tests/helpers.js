@@ -257,6 +257,10 @@ export async function withMockedCommunications(
   { providerType, infuraNetwork = 'mainnet', customRpcUrl = MOCK_RPC_URL },
   fn,
 ) {
+  console.log('providerType', providerType)
+  console.log('infuraNetwork', infuraNetwork)
+  console.log('customRpcUrl', customRpcUrl)
+
   if (providerType !== 'infura' && providerType !== 'custom') {
     throw new Error(
       `providerType must be either "infura" or "custom", was "${providerType}" instead`,
@@ -282,6 +286,7 @@ export async function withMockedCommunications(
     infuraNetwork,
   };
 
+  console.log('comms:', comms)
   try {
     return await fn(comms);
   } finally {

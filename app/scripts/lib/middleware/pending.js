@@ -3,6 +3,7 @@ import { formatTxMetaForRpcResult } from '../util';
 
 export function createPendingNonceMiddleware({ getPendingNonce }) {
   return createAsyncMiddleware(async (req, res, next) => {
+    console.log("req:", req)
     const { method, params } = req;
     if (method !== 'eth_getTransactionCount') {
       next();

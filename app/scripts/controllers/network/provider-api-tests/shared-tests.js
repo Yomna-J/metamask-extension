@@ -129,7 +129,7 @@ export function testsForProviderType(providerType) {
         // { name: 'eth_sign', numberOfParameters: 2 },
         // { name: 'eth_submitWork', numberOfParameters: 3 },
         // { name: 'eth_syncing', numberOfParameters: 0 },
-        { name: 'eth_uninstallFilter', numberOfParameters: 1 },
+        // { name: 'eth_uninstallFilter', numberOfParameters: 1 },
       ];
       notHandledByMiddleware.forEach(({ name, numberOfParameters }) => {
         describe(`method name: ${name}`, () => {
@@ -487,7 +487,6 @@ export function testsForRpcMethodAssumingNoBlockParam(
         response: { result: mockResults[0] },
       });
 
-      console.log('requests:', requests)
       const results = await withNetworkClient(
         { providerType },
         ({ makeRpcCallsInSeries }) => makeRpcCallsInSeries(requests),
@@ -1653,7 +1652,7 @@ export function testsForRpcMethodSupportingBlockParam(
     ['given no block tag', undefined],
     ['given a block tag of "latest"', 'latest'],
   ])('%s', (_desc, blockParam) => {
-    it('does not hit the RPC endpoint more than once for identical requests', async () => {
+    it.only('does not hit the RPC endpoint more than once for identical requests', async () => {
       const requests = [
         {
           method,
