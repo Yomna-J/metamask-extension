@@ -344,6 +344,8 @@ export async function withNetworkClient(
         });
   process.env.IN_TEST = inTest;
 
+  console.log('providerType:', providerType)
+
   const { provider, blockTracker } = clientUnderTest;
 
   const ethQuery = new EthQuery(provider);

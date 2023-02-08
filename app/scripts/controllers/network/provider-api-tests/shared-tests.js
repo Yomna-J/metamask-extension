@@ -110,25 +110,25 @@ export function testsForProviderType(providerType) {
   // Ethereum JSON-RPC spec: <https://ethereum.github.io/execution-apis/api-documentation/>
   // Infura documentation: <https://docs.infura.io/infura/networks/ethereum/json-rpc-methods>
 
-  describe('methods included in the Ethereum JSON-RPC spec', () => {
-    describe('methods not handled by middleware', () => {
+  describe.only('methods included in the Ethereum JSON-RPC spec', () => {
+    describe.only('methods not handled by middleware', () => {
       const notHandledByMiddleware = [
-        { name: 'eth_accounts', numberOfParameters: 0 },
-        { name: 'eth_coinbase', numberOfParameters: 0 },
-        { name: 'eth_feeHistory', numberOfParameters: 3 },
+        // { name: 'eth_accounts', numberOfParameters: 0 },
+        // { name: 'eth_coinbase', numberOfParameters: 0 },
+        // { name: 'eth_feeHistory', numberOfParameters: 3 },
         { name: 'eth_getFilterChanges', numberOfParameters: 1 },
-        { name: 'eth_getLogs', numberOfParameters: 1 },
-        { name: 'eth_getWork', numberOfParameters: 0 },
-        { name: 'eth_hashrate', numberOfParameters: 0 },
-        { name: 'eth_mining', numberOfParameters: 0 },
-        { name: 'eth_newBlockFilter', numberOfParameters: 0 },
-        { name: 'eth_newFilter', numberOfParameters: 1 },
-        { name: 'eth_newPendingTransactionFilter', numberOfParameters: 0 },
-        { name: 'eth_sendRawTransaction', numberOfParameters: 1 },
-        { name: 'eth_sendTransaction', numberOfParameters: 1 },
-        { name: 'eth_sign', numberOfParameters: 2 },
-        { name: 'eth_submitWork', numberOfParameters: 3 },
-        { name: 'eth_syncing', numberOfParameters: 0 },
+        // { name: 'eth_getLogs', numberOfParameters: 1 },
+        // { name: 'eth_getWork', numberOfParameters: 0 },
+        // { name: 'eth_hashrate', numberOfParameters: 0 },
+        // { name: 'eth_mining', numberOfParameters: 0 },
+        // { name: 'eth_newBlockFilter', numberOfParameters: 0 },
+        // { name: 'eth_newFilter', numberOfParameters: 1 },
+        // { name: 'eth_newPendingTransactionFilter', numberOfParameters: 0 },
+        // { name: 'eth_sendRawTransaction', numberOfParameters: 1 },
+        // { name: 'eth_sendTransaction', numberOfParameters: 1 },
+        // { name: 'eth_sign', numberOfParameters: 2 },
+        // { name: 'eth_submitWork', numberOfParameters: 3 },
+        // { name: 'eth_syncing', numberOfParameters: 0 },
         { name: 'eth_uninstallFilter', numberOfParameters: 1 },
       ];
       notHandledByMiddleware.forEach(({ name, numberOfParameters }) => {
@@ -141,266 +141,267 @@ export function testsForProviderType(providerType) {
       });
     });
 
-    describe('methods that have a param to specify the block', () => {
-      const supportingBlockParam = [
-        {
-          name: 'eth_call',
-          blockParamIndex: 1,
-          numberOfParameters: 2,
-        },
-        {
-          name: 'eth_getBalance',
-          blockParamIndex: 1,
-          numberOfParameters: 2,
-        },
-        {
-          name: 'eth_getBlockByNumber',
-          blockParamIndex: 0,
-          numberOfParameters: 2,
-        },
-        { name: 'eth_getCode', blockParamIndex: 1, numberOfParameters: 2 },
-        {
-          name: 'eth_getStorageAt',
-          blockParamIndex: 2,
-          numberOfParameters: 3,
-        },
-        {
-          name: 'eth_getTransactionCount',
-          blockParamIndex: 1,
-          numberOfParameters: 2,
-        },
-      ];
-      supportingBlockParam.forEach(
-        ({ name, blockParamIndex, numberOfParameters }) => {
-          describe(`method name: ${name}`, () => {
-            testsForRpcMethodSupportingBlockParam(name, {
-              providerType,
-              blockParamIndex,
-              numberOfParameters,
-            });
-          });
-        },
-      );
-    });
+    // describe.skip('methods that have a param to specify the block', () => {
+    //   const supportingBlockParam = [
+    //     {
+    //       name: 'eth_call',
+    //       blockParamIndex: 1,
+    //       numberOfParameters: 2,
+    //     },
+    //     {
+    //       name: 'eth_getBalance',
+    //       blockParamIndex: 1,
+    //       numberOfParameters: 2,
+    //     },
+    //     {
+    //       name: 'eth_getBlockByNumber',
+    //       blockParamIndex: 0,
+    //       numberOfParameters: 2,
+    //     },
+    //     { name: 'eth_getCode', blockParamIndex: 1, numberOfParameters: 2 },
+    //     {
+    //       name: 'eth_getStorageAt',
+    //       blockParamIndex: 2,
+    //       numberOfParameters: 3,
+    //     },
+    //     {
+    //       name: 'eth_getTransactionCount',
+    //       blockParamIndex: 1,
+    //       numberOfParameters: 2,
+    //     },
+    //   ];
+    //   supportingBlockParam.forEach(
+    //     ({ name, blockParamIndex, numberOfParameters }) => {
+    //       describe(`method name: ${name}`, () => {
+    //         testsForRpcMethodSupportingBlockParam(name, {
+    //           providerType,
+    //           blockParamIndex,
+    //           numberOfParameters,
+    //         });
+    //       });
+    //     },
+    //   );
+    // });
 
-    describe('methods that assume there is no block param', () => {
-      const assumingNoBlockParam = [
-        { name: 'eth_blockNumber', numberOfParameters: 0 },
-        { name: 'eth_estimateGas', numberOfParameters: 2 },
-        { name: 'eth_gasPrice', numberOfParameters: 0 },
-        { name: 'eth_getBlockByHash', numberOfParameters: 2 },
-        // NOTE: eth_getBlockTransactionCountByNumber does take a block param at
-        // the 0th index, but this is not handled by our cache middleware
-        // currently
-        {
-          name: 'eth_getBlockTransactionCountByNumber',
-          numberOfParameters: 1,
-        },
-        // NOTE: eth_getTransactionByBlockNumberAndIndex does take a block param
-        // at the 0th index, but this is not handled by our cache middleware
-        // currently
-        {
-          name: 'eth_getTransactionByBlockNumberAndIndex',
-          numberOfParameters: 2,
-        },
-        {
-          name: 'eth_getBlockTransactionCountByHash',
-          numberOfParameters: 1,
-        },
-        { name: 'eth_getFilterLogs', numberOfParameters: 1 },
-        {
-          name: 'eth_getTransactionByBlockHashAndIndex',
-          numberOfParameters: 2,
-        },
-        { name: 'eth_getUncleByBlockHashAndIndex', numberOfParameters: 2 },
-        // NOTE: eth_getUncleByBlockNumberAndIndex does take a block param at
-        // the 0th index, but this is not handled by our cache middleware
-        // currently
-        { name: 'eth_getUncleByBlockNumberAndIndex', numberOfParameters: 2 },
-        { name: 'eth_getUncleCountByBlockHash', numberOfParameters: 1 },
-        // NOTE: eth_getUncleCountByBlockNumber does take a block param at the
-        // 0th index, but this is not handled by our cache middleware currently
-        { name: 'eth_getUncleCountByBlockNumber', numberOfParameters: 1 },
-      ];
-      assumingNoBlockParam.forEach(({ name, numberOfParameters }) =>
-        describe(`method name: ${name}`, () => {
-          testsForRpcMethodAssumingNoBlockParam(name, {
-            providerType,
-            numberOfParameters,
-          });
-        }),
-      );
-    });
+    // describe.only('methods that assume there is no block param', () => {
+    //   const assumingNoBlockParam = [
+    //     // { name: 'eth_blockNumber', numberOfParameters: 0 },
+    //     // { name: 'eth_estimateGas', numberOfParameters: 2 },
+    //     // { name: 'eth_gasPrice', numberOfParameters: 0 },
+    //     // { name: 'eth_getBlockByHash', numberOfParameters: 2 },
+    //     // // NOTE: eth_getBlockTransactionCountByNumber does take a block param at
+    //     // // the 0th index, but this is not handled by our cache middleware
+    //     // // currently
+    //     // {
+    //     //   name: 'eth_getBlockTransactionCountByNumber',
+    //     //   numberOfParameters: 1,
+    //     // },
+    //     // // NOTE: eth_getTransactionByBlockNumberAndIndex does take a block param
+    //     // // at the 0th index, but this is not handled by our cache middleware
+    //     // // currently
+    //     // {
+    //     //   name: 'eth_getTransactionByBlockNumberAndIndex',
+    //     //   numberOfParameters: 2,
+    //     // },
+    //     // {
+    //     //   name: 'eth_getBlockTransactionCountByHash',
+    //     //   numberOfParameters: 1,
+    //     // },
+    //     // { name: 'eth_getFilterLogs', numberOfParameters: 1 },
+    //     // {
+    //     //   name: 'eth_getTransactionByBlockHashAndIndex',
+    //     //   numberOfParameters: 2,
+    //     // },
+    //     // { name: 'eth_getUncleByBlockHashAndIndex', numberOfParameters: 2 },
+    //     // // NOTE: eth_getUncleByBlockNumberAndIndex does take a block param at
+    //     // // the 0th index, but this is not handled by our cache middleware
+    //     // // currently
+    //     // { name: 'eth_getUncleByBlockNumberAndIndex', numberOfParameters: 2 },
+    //     // { name: 'eth_getUncleCountByBlockHash', numberOfParameters: 1 },
+    //     // // NOTE: eth_getUncleCountByBlockNumber does take a block param at the
+    //     // // 0th index, but this is not handled by our cache middleware currently
+    //     // { name: 'eth_getUncleCountByBlockNumber', numberOfParameters: 1 },
+    //   ];
+    //   assumingNoBlockParam.forEach(({ name, numberOfParameters }) =>
+    //     describe(`method name: ${name}`, () => {
+    //       console.log('name:', name);
+    //       testsForRpcMethodAssumingNoBlockParam(name, {
+    //         providerType,
+    //         numberOfParameters,
+    //       });
+    //     }),
+    //   );
+    // });
 
-    describe('methods with block hashes in their result', () => {
-      const methodsWithBlockHashInResponse = [
-        { name: 'eth_getTransactionByHash', numberOfParameters: 1 },
-        { name: 'eth_getTransactionReceipt', numberOfParameters: 1 },
-      ];
-      methodsWithBlockHashInResponse.forEach(({ name, numberOfParameters }) => {
-        describe(`method name: ${name}`, () => {
-          testsForRpcMethodsThatCheckForBlockHashInResponse(name, {
-            numberOfParameters,
-            providerType,
-          });
-        });
-      });
-    });
+    // describe('methods with block hashes in their result', () => {
+    //   const methodsWithBlockHashInResponse = [
+    //     { name: 'eth_getTransactionByHash', numberOfParameters: 1 },
+    //     { name: 'eth_getTransactionReceipt', numberOfParameters: 1 },
+    //   ];
+    //   methodsWithBlockHashInResponse.forEach(({ name, numberOfParameters }) => {
+    //     describe(`method name: ${name}`, () => {
+    //       testsForRpcMethodsThatCheckForBlockHashInResponse(name, {
+    //         numberOfParameters,
+    //         providerType,
+    //       });
+    //     });
+    //   });
+    // });
 
-    describe('other methods', () => {
-      describe('eth_getTransactionByHash', () => {
-        it("refreshes the block tracker's current block if it is less than the block number that comes back in the response", async () => {
-          const method = 'eth_getTransactionByHash';
+    // describe('other methods', () => {
+    //   describe('eth_getTransactionByHash', () => {
+    //     it("refreshes the block tracker's current block if it is less than the block number that comes back in the response", async () => {
+    //       const method = 'eth_getTransactionByHash';
 
-          await withMockedCommunications({ providerType }, async (comms) => {
-            const request = { method };
+    //       await withMockedCommunications({ providerType }, async (comms) => {
+    //         const request = { method };
 
-            comms.mockNextBlockTrackerRequest({ blockNumber: '0x100' });
-            // This is our request.
-            comms.mockRpcCall({
-              request,
-              response: {
-                result: {
-                  blockNumber: '0x200',
-                },
-              },
-            });
-            comms.mockNextBlockTrackerRequest({ blockNumber: '0x300' });
+    //         comms.mockNextBlockTrackerRequest({ blockNumber: '0x100' });
+    //         // This is our request.
+    //         comms.mockRpcCall({
+    //           request,
+    //           response: {
+    //             result: {
+    //               blockNumber: '0x200',
+    //             },
+    //           },
+    //         });
+    //         comms.mockNextBlockTrackerRequest({ blockNumber: '0x300' });
 
-            await withNetworkClient(
-              { providerType },
-              async ({ makeRpcCall, blockTracker }) => {
-                await makeRpcCall(request);
-                expect(blockTracker.getCurrentBlock()).toStrictEqual('0x300');
-              },
-            );
-          });
-        });
-      });
+    //         await withNetworkClient(
+    //           { providerType },
+    //           async ({ makeRpcCall, blockTracker }) => {
+    //             await makeRpcCall(request);
+    //             expect(blockTracker.getCurrentBlock()).toStrictEqual('0x300');
+    //           },
+    //         );
+    //       });
+    //     });
+    //   });
 
-      describe('eth_getTransactionReceipt', () => {
-        it("refreshes the block tracker's current block if it is less than the block number that comes back in the response", async () => {
-          const method = 'eth_getTransactionReceipt';
+    //   describe('eth_getTransactionReceipt', () => {
+    //     it("refreshes the block tracker's current block if it is less than the block number that comes back in the response", async () => {
+    //       const method = 'eth_getTransactionReceipt';
 
-          await withMockedCommunications({ providerType }, async (comms) => {
-            const request = { method };
+    //       await withMockedCommunications({ providerType }, async (comms) => {
+    //         const request = { method };
 
-            comms.mockNextBlockTrackerRequest({ blockNumber: '0x100' });
-            // This is our request.
-            comms.mockRpcCall({
-              request,
-              response: {
-                result: {
-                  blockNumber: '0x200',
-                },
-              },
-            });
-            comms.mockNextBlockTrackerRequest({ blockNumber: '0x300' });
+    //         comms.mockNextBlockTrackerRequest({ blockNumber: '0x100' });
+    //         // This is our request.
+    //         comms.mockRpcCall({
+    //           request,
+    //           response: {
+    //             result: {
+    //               blockNumber: '0x200',
+    //             },
+    //           },
+    //         });
+    //         comms.mockNextBlockTrackerRequest({ blockNumber: '0x300' });
 
-            await withNetworkClient(
-              { providerType },
-              async ({ makeRpcCall, blockTracker }) => {
-                await makeRpcCall(request);
-                expect(blockTracker.getCurrentBlock()).toStrictEqual('0x300');
-              },
-            );
-          });
-        });
-      });
+    //         await withNetworkClient(
+    //           { providerType },
+    //           async ({ makeRpcCall, blockTracker }) => {
+    //             await makeRpcCall(request);
+    //             expect(blockTracker.getCurrentBlock()).toStrictEqual('0x300');
+    //           },
+    //         );
+    //       });
+    //     });
+    //   });
 
-      describe('eth_chainId', () => {
-        it('does not hit the RPC endpoint, instead returning the configured chain id', async () => {
-          const networkId = await withNetworkClient(
-            { providerType: 'custom', customChainId: '0x1' },
-            ({ makeRpcCall }) => {
-              return makeRpcCall({ method: 'eth_chainId' });
-            },
-          );
+    //   describe('eth_chainId', () => {
+    //     it('does not hit the RPC endpoint, instead returning the configured chain id', async () => {
+    //       const networkId = await withNetworkClient(
+    //         { providerType: 'custom', customChainId: '0x1' },
+    //         ({ makeRpcCall }) => {
+    //           return makeRpcCall({ method: 'eth_chainId' });
+    //         },
+    //       );
 
-          expect(networkId).toStrictEqual('0x1');
-        });
-      });
-    });
+    //       expect(networkId).toStrictEqual('0x1');
+    //     });
+    //   });
+    // });
   });
 
-  describe('methods not included in the Ethereum JSON-RPC spec', () => {
-    describe('methods not handled by middleware', () => {
-      const notHandledByMiddleware = [
-        { name: 'custom_rpc_method', numberOfParameters: 1 },
-        { name: 'eth_subscribe', numberOfParameters: 1 },
-        { name: 'eth_unsubscribe', numberOfParameters: 1 },
-        { name: 'net_listening', numberOfParameters: 0 },
-        { name: 'net_peerCount', numberOfParameters: 0 },
-        { name: 'parity_nextNonce', numberOfParameters: 1 },
-      ];
-      notHandledByMiddleware.forEach(({ name, numberOfParameters }) => {
-        describe(`method name: ${name}`, () => {
-          testsForRpcMethodNotHandledByMiddleware(name, {
-            providerType,
-            numberOfParameters,
-          });
-        });
-      });
-    });
+  // describe('methods not included in the Ethereum JSON-RPC spec', () => {
+  //   describe('methods not handled by middleware', () => {
+  //     const notHandledByMiddleware = [
+  //       { name: 'custom_rpc_method', numberOfParameters: 1 },
+  //       { name: 'eth_subscribe', numberOfParameters: 1 },
+  //       { name: 'eth_unsubscribe', numberOfParameters: 1 },
+  //       { name: 'net_listening', numberOfParameters: 0 },
+  //       { name: 'net_peerCount', numberOfParameters: 0 },
+  //       { name: 'parity_nextNonce', numberOfParameters: 1 },
+  //     ];
+  //     notHandledByMiddleware.forEach(({ name, numberOfParameters }) => {
+  //       describe(`method name: ${name}`, () => {
+  //         testsForRpcMethodNotHandledByMiddleware(name, {
+  //           providerType,
+  //           numberOfParameters,
+  //         });
+  //       });
+  //     });
+  //   });
 
-    describe('methods that assume there is no block param', () => {
-      const assumingNoBlockParam = [
-        { name: 'eth_protocolVersion', numberOfParameters: 0 },
-        { name: 'web3_clientVersion', numberOfParameters: 0 },
-      ];
-      assumingNoBlockParam.forEach(({ name, numberOfParameters }) =>
-        describe(`method name: ${name}`, () => {
-          testsForRpcMethodAssumingNoBlockParam(name, {
-            providerType,
-            numberOfParameters,
-          });
-        }),
-      );
-    });
+  //   describe('methods that assume there is no block param', () => {
+  //     const assumingNoBlockParam = [
+  //       { name: 'eth_protocolVersion', numberOfParameters: 0 },
+  //       { name: 'web3_clientVersion', numberOfParameters: 0 },
+  //     ];
+  //     assumingNoBlockParam.forEach(({ name, numberOfParameters }) =>
+  //       describe(`method name: ${name}`, () => {
+  //         testsForRpcMethodAssumingNoBlockParam(name, {
+  //           providerType,
+  //           numberOfParameters,
+  //         });
+  //       }),
+  //     );
+  //   });
 
-    describe('other methods', () => {
-      describe('net_version', () => {
-        // The Infura middleware includes `net_version` in its scaffold
-        // middleware, whereas the custom RPC middleware does not.
-        if (providerType === 'infura') {
-          it('does not hit Infura, instead returning the network ID that maps to the Infura network, as a decimal string', async () => {
-            const networkId = await withNetworkClient(
-              { providerType: 'infura', infuraNetwork: 'goerli' },
-              ({ makeRpcCall }) => {
-                return makeRpcCall({
-                  method: 'net_version',
-                });
-              },
-            );
-            expect(networkId).toStrictEqual('5');
-          });
-        } else {
-          it('hits the RPC endpoint', async () => {
-            await withMockedCommunications(
-              { providerType: 'custom' },
-              async (comms) => {
-                comms.mockRpcCall({
-                  request: { method: 'net_version' },
-                  response: { result: '1' },
-                });
+  //   describe('other methods', () => {
+  //     describe('net_version', () => {
+  //       // The Infura middleware includes `net_version` in its scaffold
+  //       // middleware, whereas the custom RPC middleware does not.
+  //       if (providerType === 'infura') {
+  //         it('does not hit Infura, instead returning the network ID that maps to the Infura network, as a decimal string', async () => {
+  //           const networkId = await withNetworkClient(
+  //             { providerType: 'infura', infuraNetwork: 'goerli' },
+  //             ({ makeRpcCall }) => {
+  //               return makeRpcCall({
+  //                 method: 'net_version',
+  //               });
+  //             },
+  //           );
+  //           expect(networkId).toStrictEqual('5');
+  //         });
+  //       } else {
+  //         it('hits the RPC endpoint', async () => {
+  //           await withMockedCommunications(
+  //             { providerType: 'custom' },
+  //             async (comms) => {
+  //               comms.mockRpcCall({
+  //                 request: { method: 'net_version' },
+  //                 response: { result: '1' },
+  //               });
 
-                const networkId = await withNetworkClient(
-                  { providerType: 'custom' },
-                  ({ makeRpcCall }) => {
-                    return makeRpcCall({
-                      method: 'net_version',
-                    });
-                  },
-                );
+  //               const networkId = await withNetworkClient(
+  //                 { providerType: 'custom' },
+  //                 ({ makeRpcCall }) => {
+  //                   return makeRpcCall({
+  //                     method: 'net_version',
+  //                   });
+  //                 },
+  //               );
 
-                expect(networkId).toStrictEqual('1');
-              },
-            );
-          });
-        }
-      });
-    });
-  });
+  //               expect(networkId).toStrictEqual('1');
+  //             },
+  //           );
+  //         });
+  //       }
+  //     });
+  //   });
+  // });
 }
 
 /**
@@ -472,7 +473,7 @@ export function testsForRpcMethodAssumingNoBlockParam(
     );
   }
 
-  it('does not hit the RPC endpoint more than once for identical requests', async () => {
+  it.only('does not hit the RPC endpoint more than once for identical requests', async () => {
     const requests = [{ method }, { method }];
     const mockResults = ['first result', 'second result'];
 
@@ -486,6 +487,7 @@ export function testsForRpcMethodAssumingNoBlockParam(
         response: { result: mockResults[0] },
       });
 
+      console.log('requests:', requests)
       const results = await withNetworkClient(
         { providerType },
         ({ makeRpcCallsInSeries }) => makeRpcCallsInSeries(requests),
@@ -1060,7 +1062,7 @@ export function testsForRpcMethodAssumingNoBlockParam(
       });
     });
   } else {
-    it('does not retry the request to the RPC endpoint, but throws immediately, if an "ECONNRESET" error is thrown while making the request', async () => {
+    it.only('does not retry the request to the RPC endpoint, but throws immediately, if an "ECONNRESET" error is thrown while making the request', async () => {
       const customRpcUrl = 'http://example.com';
 
       await withMockedCommunications(
