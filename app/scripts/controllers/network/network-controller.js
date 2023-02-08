@@ -441,7 +441,7 @@ export default class NetworkController extends EventEmitter {
   }
 
   _configureInfuraProvider({ type, infuraProjectId }) {
-    log.info('NetworkController - configureInfuraProvider', network);
+    log.info('NetworkController - configureInfuraProvider', type);
     const { provider, blockTracker } = createNetworkClient({
       network: type,
       infuraProjectId,

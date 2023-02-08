@@ -109,7 +109,7 @@ type InfuraSupportedNetwork = 'goerli' | 'mainnet' | 'sepolia' | 'localhost';
 
 type InfuraNetworkConfiguration = {
   network: InfuraSupportedNetwork;
-  projectId: string;
+  infuraProjectId: string;
   type: NetworkClientType.INFURA;
 };
 
@@ -122,15 +122,13 @@ type InfuraNetworkConfiguration = {
 export function createNetworkClient(
   networkConfig: CustomNetworkConfiguration | InfuraNetworkConfiguration,
 ) {
-  if (networkConfig.type === NetworkClientType.INFURA) {
-  }
   const rpcApiMiddleware:
     | JsonRpcMiddleware<unknown, unknown>
     | JsonRpcMiddleware<string[], Block> =
     networkConfig.type === NetworkClientType.INFURA
       ? createInfuraMiddleware({
           network: networkConfig.network,
-          projectId: networkConfig.projectId,
+          projectId: networkConfig.infuraProjectId,
           maxAttempts: 5,
           source: 'metamask',
         })

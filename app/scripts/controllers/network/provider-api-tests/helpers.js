@@ -334,7 +334,7 @@ export async function withNetworkClient(
     providerType === 'infura'
       ? createNetworkClient({
           network: infuraNetwork,
-          projectId: MOCK_INFURA_PROJECT_ID,
+          infuraProjectId: MOCK_INFURA_PROJECT_ID,
           type: 'infura',
         })
       : createNetworkClient({
